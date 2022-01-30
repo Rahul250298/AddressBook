@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +14,6 @@ namespace AddressBook
             Console.WriteLine("Welcome to Address Book Progam \n");
             CreateAddressBook createAddressBook = new CreateAddressBook();
             createAddressBook.ReadInput();
-            Console.ReadLine();
             Console.ReadLine();
         }
     }
