@@ -11,19 +11,9 @@ namespace AddressBook
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Addressd Book Program ");
-            Console.Write("Enter First Name, Last Name, Address, City, State, Zip, Phone Number, Email \n");
-            CreateAddressBook addressBook = new CreateAddressBook()  //Initializing elements using collection-initializer syntax
-            {
-                FirstName = Console.ReadLine(),
-                LastName = Console.ReadLine(),
-                Address = Console.ReadLine(),
-                City = Console.ReadLine(),
-                State = Console.ReadLine(),
-                Zip = Convert.ToDouble(Console.ReadLine()),
-                PhoneNumber = Convert.ToDouble(Console.ReadLine()),
-                Email = Console.ReadLine(),
-            };
-            addressBook.displayContact();
+            CreateAddressBook addressBook = new CreateAddressBook();
+            addressBook.AddContact();
+            Console.ReadLine();
             Console.ReadLine();
         }
     }
