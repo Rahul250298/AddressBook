@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace AddressBook
 {
-    internal class AddressBookMain
+      internal class AddressBookMain
     {
         //Collection Class
         private List<Contacts> contactList;
+        private List<Contacts> cityList;
+        private List<Contacts> stateList;
         //Constructor.
         public AddressBookMain()
         {
             this.contactList = new List<Contacts>();
         }
         //Method to Add Contact
-        public void AddContactDetails(string firstName, string lastName, string address, string city, string state, long zipCode, long phoneNumber, string email)
+        public void AddContactDetails(string firstName, string lastName, string address, string city, string state, long zipCode, long phoneNumber, string email, Dictionary<string, List<Contacts>> stateDictionary, Dictionary<string, List<Contacts>> cityDictionary)
         {
 
             // finding the data that already has the same first name
@@ -26,6 +28,30 @@ namespace AddressBook
             {
                 Contacts contactDetails = new Contacts(firstName, lastName, address, city, state, zipCode, phoneNumber, email);
                 this.contactList.Add(contactDetails);
+                if (!cityDictionary.ContainsKey(city))
+                {
+
+                    cityList = new List<Contacts>();
+                    cityList.Add(contactDetails);
+                    cityDictionary.Add(city, cityList);
+                }
+                else
+                {
+                    List<Contacts> cities = cityDictionary[city];
+                    cities.Add(contactDetails);
+                }
+                if (!stateDictionary.ContainsKey(state))
+                {
+
+                    stateList = new List<Contacts>();
+                    stateList.Add(contactDetails);
+                    stateDictionary.Add(state, stateList);
+                }
+                else
+                {
+                    List<Contacts> states = stateDictionary[state];
+                    states.Add(contactDetails);
+                }
             }
             // print person already exists in the address book
             else
@@ -117,6 +143,57 @@ namespace AddressBook
                 }
             }
         }
+        /// <summary>
+        /// display list of person across adress book system
+        /// </summary>
+        /// <param name="addressDictionary"></param>
+        public static void DisplayPerson(Dictionary<string, AddressBookMain> addressDictionary)
+        {
+            List<Contacts> list = null;
+            Console.WriteLine("Enter City or State name");
+            string name = Console.ReadLine();
+            foreach (var data in addressDictionary)
+            {
+                AddressBookMain address = data.Value;
+                list = address.contactList.FindAll(x => x.city.Equals(name) || x.state.Equals(name));
+                if (list.Count > 0)
+                {
+                    DisplayList(list);
+                }
+            }
+            if (list == null)
+            {
+                Console.WriteLine("No person present in the address book with same city or state name");
+            }
+        }
+        /// <summary>
+        /// display the data 
+        /// </summary>
+        /// <param name="list"></param>
+        public static void DisplayList(List<Contacts> list)
+        {
+            foreach (var data in list)
+            {
+                data.Display();
+            }
+        }
+        /// <summary>
+        /// display the person details by city or state
+        /// </summary>
+        /// <param name="dictinary"></param>
+        public static void PrintList(Dictionary<string, List<Contacts>> dictionary)
+        {
+            foreach (var data in dictionary)
+            {
+                Console.WriteLine("Details of person in {0}", data.Key);
+                foreach (var person in data.Value)
+                {
+                    Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", person.firstName, person.lastName, person.address,
+                                                                   person.city, person.state, person.zipCode, person.phoneNumber, person.email);
+                }
+                Console.WriteLine("-----------------------------");
+            }
+        }
     }
 }
-       
+     
